@@ -1,0 +1,193 @@
+<html>
+<head>
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
+  <![endif]-->
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <style>
+    html, body {width:100%; height:100%; padding: 0; margin: 0;}
+    #cartodb-map { width: 100%; height:60%; background: black;}
+  </style>
+
+
+  
+
+  <script>
+    var map;
+    function init(){
+
+        map_object = new L.Map('cartodb-map', { 
+          center: [-33.8,150.95],
+          zoom: 10
+        })
+
+        L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
+          attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+        }).addTo(map_object);
+
+        var layerSource = {
+            user_name:'audreygovhack2015',
+            type:'cartodb',
+            sublayers: [{
+              sql: "SELECT * FROM my_pop_65_over_geo",
+              interactivity: 'cartodb_id,suburb',
+              cartocss: '#my_pop_65_over_geo{polygon-fill: #EDF8FB;polygon-opacity: 0.8;line-color: #FFF;line-width: 0.5;line-opacity: 1;} #my_pop_65_over_geo [ _65_over_pop <= 4745] {polygon-fill: #005824;} #my_pop_65_over_geo [ _65_over_pop <= 3057] { polygon-fill: #238B45; } #my_pop_65_over_geo [ _65_over_pop <= 2584.5] { polygon-fill: #41AE76; } #my_pop_65_over_geo [ _65_over_pop <= 2058.5] { polygon-fill: #66C2A4; } #my_pop_65_over_geo [ _65_over_pop <= 1819.5] { polygon-fill: #CCECE6; } #my_pop_65_over_geo [ _65_over_pop <= 1390.5] { polygon-fill: #D7FAF4; } #my_pop_65_over_geo [ _65_over_pop <= 1051.5] {polygon-fill: #EDF8FB;}'
+            },
+            {
+              sql: "SELECT * FROM nsw_data_jwwn_sydmet where aged_care_activities = True or aged_persons =True",
+              interactivity: 'cartodb_id',
+              cartocss: '#nsw_data_firstpass_sydonly{marker-fill-opacity: 0.9;marker-line-color: #FFF;marker-line-width: 1.5;marker-line-opacity: 1;marker-placement: point;marker-type: ellipse;marker-width: 8;marker-fill: #FF6600;marker-allow-overlap: true;}'
+            },
+            {
+              sql: "SELECT * FROM my_homeless_data_geo_copy",
+               interactivity: 'cartodb_id',
+              cartocss: '#my_homeless_data_geo_copy{ polygon-fill: #EDF8FB; polygon-opacity: 0.8; line-color: #FFF; line-width: 0.5; line-opacity: 0.8; } #my_homeless_data_geo_copy [ num_homeless_persons <= 797] { polygon-fill: #005824; } #my_homeless_data_geo_copy [ num_homeless_persons <= 199] { polygon-fill: #238B45; } #my_homeless_data_geo_copy [ num_homeless_persons <= 133] { polygon-fill: #41AE76; } #my_homeless_data_geo_copy [ num_homeless_persons <= 92] { polygon-fill: #66C2A4; } #my_homeless_data_geo_copy [ num_homeless_persons <= 66] { polygon-fill: #CCECE6; } #my_homeless_data_geo_copy [ num_homeless_persons <= 42] { polygon-fill: #D7FAF4; } #my_homeless_data_geo_copy [ num_homeless_persons <= 21] { polygon-fill: #EDF8FB; }'
+            },
+            {
+              sql: "SELECT * FROM nsw_data_jwwn_sydmet where people_at_risk_of_homelessness = True",
+              interactivity: 'cartodb_id',
+              cartocss: '#nsw_data_firstpass_sydonly{ marker-fill-opacity: 0.9; marker-line-color: #FFF; marker-line-width: 1.5; marker-line-opacity: 1; marker-placement: point; marker-type: ellipse; marker-width: 8; marker-fill: #FF6600; marker-allow-overlap: true; }'
+            },
+            {
+              sql: "SELECT * FROM my_indigpop_copy",
+              interactivity: 'cartodb_id',
+              cartocss: '#my_indigpop_copy{ polygon-fill: #EDF8FB; polygon-opacity: 0.8; line-color: #FFF;line-width: 0.5; line-opacity: 0.8; } #my_indigpop_copy [ aboriginal_and_or_torres_strait_islander <= 1990] { polygon-fill: #005824; } #my_indigpop_copy [ aboriginal_and_or_torres_strait_islander <= 546] { polygon-fill: #238B45; } #my_indigpop_copy [ aboriginal_and_or_torres_strait_islander <= 360] { polygon-fill: #41AE76; } #my_indigpop_copy [ aboriginal_and_or_torres_strait_islander <= 214] { polygon-fill: #66C2A4; } #my_indigpop_copy [ aboriginal_and_or_torres_strait_islander <= 155] { polygon-fill: #CCECE6; } #my_indigpop_copy [ aboriginal_and_or_torres_strait_islander <= 102] { polygon-fill: #D7FAF4; } #my_indigpop_copy [ aboriginal_and_or_torres_strait_islander <= 62] { polygon-fill: #EDF8FB; }'
+            },
+            {
+              sql: "SELECT * FROM nsw_data_jwwn_sydmet where aboriginal_or_tsi = True",
+              interactivity: 'cartodb_id',
+              cartocss: '#nsw_data_firstpass_sydonly{ marker-fill-opacity: 0.9; marker-line-color: #FFF; marker-line-width: 1.5; marker-line-opacity: 1; marker-placement: point; marker-type: ellipse; marker-width: 8; marker-fill: #FF6600; marker-allow-overlap: true; }'
+            }]
+
+          }
+
+        var sublayers = [];
+
+        cartodb.createLayer(map_object,layerSource)
+               .addTo(map_object)
+               .done(function(layer) {
+                  for (var i = 0; i < layer.getSubLayerCount(); i++) {
+                      sublayers[i] = layer.getSubLayer(i);
+                      //alert("woohoo layer " + i);
+                  }
+                  layer.setOpacity(0.8);
+                  sublayers[2].hide();
+                  sublayers[3].hide();
+                  sublayers[4].hide();
+                  sublayers[5].hide();
+               })
+               .error(function(err) {
+                  console.log('error: ' + err);
+               })
+
+
+
+      var agedShown = true;
+      $("#aged").on('click',function(){
+          if (agedShown) {
+            //sublayers[0].hide();
+            //sublayers[1].hide();
+          } else {
+            sublayers[0].show();
+            sublayers[1].show();
+            sublayers[2].hide();
+            sublayers[3].hide();
+            sublayers[4].hide();
+            sublayers[5].hide();            
+            agedShown = true;
+            homelessShown = false;
+            indiginousShown = false;
+
+
+          }
+
+      });
+
+      var homelessShown = false;
+      $("#homeless").on('click',function(){
+          if (homelessShown) {
+            //sublayers[2].hide();
+            //sublayers[3].hide();
+          } else {
+            sublayers[0].hide();
+            sublayers[1].hide();
+            sublayers[2].show();
+            sublayers[3].show();
+            sublayers[4].hide();
+            sublayers[5].hide();
+            agedShown = false;
+            homelessShown = true;
+            indiginousShown = false;
+
+          }
+
+      });
+
+      var indiginousShown = false;
+      $("#indiginous").on('click',function(){
+          if (indiginousShown) {
+            //sublayers[2].hide();
+            //sublayers[3].hide();
+          } else {
+            sublayers[0].hide();
+            sublayers[1].hide();
+            sublayers[2].hide();
+            sublayers[3].hide();
+            sublayers[4].show();
+            sublayers[5].show();            
+            agedShown = false;
+            homelessShown = false;
+            indiginousShown = true;
+          }
+
+      });
+
+      }
+    
+  </script>
+</head>
+<body onload="init()">
+
+  <div class="container">
+    <div class="row">
+      <h1>Charities servicing the community</h1>
+    </div>
+
+    <div class="row" id="god-not-more-maps">
+      <div id='cartodb-map'></div>
+
+    </div>
+    <div class="row">
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active" id="aged">
+          <input type="radio" name="options" id="option1" autocomplete="off" checked> Aged Services
+        </label>
+        <label class="btn btn-primary" id="homeless">
+          <input type="radio" name="options" id="option2" autocomplete="off"> Homelessness
+        </label>
+        <label class="btn btn-primary" id="indiginous">
+          <input type="radio" name="options" id="option3" autocomplete="off"> Indiginous
+        </label>
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+
+
+</body>
+</html>
