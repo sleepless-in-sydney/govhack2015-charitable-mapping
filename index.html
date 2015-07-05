@@ -1,0 +1,159 @@
+<html>
+<head>
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
+  <![endif]-->
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <style>
+    html, body {width:100%; height:100%; padding: 0; margin: 0;}
+    #cartodb-map { width: 100%; height:60%; background: black;}
+  </style>
+
+
+  
+
+  <script>
+    var map;
+    function init(){
+
+        map_object = new L.Map('cartodb-map', { 
+          center: [-33.8,150.95],
+          zoom: 10
+        })
+
+        L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
+          attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+        }).addTo(map_object);
+
+        var options = {
+          cartodb_logo:false
+        }
+
+        var alllayers=[]
+        cartodb.createLayer(map_object,'https://audreygovhack2015.cartodb.com/api/v2/viz/f2952332-2255-11e5-900d-0e9d821ea90d/viz.json',options)
+              .addTo(map_object)
+              .done(function(layer) {
+                alllayers[0]=layer;
+              });
+
+        cartodb.createLayer(map_object,'https://audreygovhack2015.cartodb.com/api/v2/viz/aa9c843a-2246-11e5-82da-0e9d821ea90d/viz.json',options)
+              .addTo(map_object)
+              .done(function(layer) {
+                alllayers[1]=layer;
+                alllayers[1].hide();
+              });
+
+        cartodb.createLayer(map_object,'https://audreygovhack2015.cartodb.com/api/v2/viz/b6d11802-221d-11e5-a26b-0e9d821ea90d/viz.json',options)
+              .addTo(map_object)
+              .done(function(layer) {
+                alllayers[2]=layer;
+                alllayers[2].hide();
+              }); 
+
+
+
+      var agedShown = true;
+      $("#aged").on('click',function(){
+          if (agedShown) {
+            //sublayers[0].hide();
+            //sublayers[1].hide();
+          } else {
+            alllayers[0].show();
+            alllayers[1].hide();
+            alllayers[2].hide();
+            agedShown = true;
+            homelessShown = false;
+            indigenousShown = false;
+          }
+
+      });
+
+      var homelessShown = false;
+      $("#homeless").on('click',function(){
+          if (homelessShown) {
+            //sublayers[2].hide();
+            //sublayers[3].hide();
+          } else {
+            alllayers[0].hide();
+            alllayers[1].show();
+            alllayers[2].hide();
+            agedShown = false;
+            homelessShown = true;
+            indigenousShown = false;
+
+          }
+
+      });
+
+      var indigenousShown = false;
+      $("#indigenous").on('click',function(){
+          if (indigenousShown) {
+            //sublayers[2].hide();
+            //sublayers[3].hide();
+          } else {
+            alllayers[0].hide();
+            alllayers[1].hide();
+            alllayers[2].show();        
+            agedShown = false;
+            homelessShown = false;
+            indigenousShown = true;
+          }
+
+      });
+
+      }
+    
+  </script>
+</head>
+<body onload="init()">
+
+  <div class="container">
+    <div class="row">
+      <h1>Charities servicing the community</h1>
+    </div>
+
+    <div class="row" id="god-not-more-maps">
+      <div id='cartodb-map'></div>
+
+    </div>
+    <div class="row" style="margin-top:10px;">
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active" id="aged">
+          <input type="radio" name="options" id="option1" autocomplete="off" checked> Aged Services
+        </label>
+        <label class="btn btn-primary" id="homeless">
+          <input type="radio" name="options" id="option2" autocomplete="off"> Homelessness
+        </label>
+        <label class="btn btn-primary" id="indigenous">
+          <input type="radio" name="options" id="option3" autocomplete="off"> Indigenous
+        </label>
+      </div>
+    </div>
+
+    <div class="row" style="font-size:18px;">
+      <h2>About</h2>
+      <p>In December 2012, the Australian Charities and Not-for-profits Commission, (ACNC), was established as the first ever national charity regulator to support public trust and confidence in the sector.</p></br>
+      <p>Launched on the 11th July 2013, the ACNC Register is the official searchable database of Australian charities where 57,600 registered charities can list information about themselves and their services.</p></br>
+      <p>This app aims to provide users with the ability to identify their nearest charity that caters to their needs. It also has the potential to influence social policy in Australia in a significant way, by allowing policy developers and analysts to identify areas of need within the community and support Not-for-profit organisations to meet complex social challenges in the short and long term.</p>
+    </div>
+
+    </div>
+  </div>
+
+
+
+</body>
+</html>
